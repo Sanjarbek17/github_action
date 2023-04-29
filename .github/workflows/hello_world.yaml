@@ -11,4 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hello World"
-    
+
+  my-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print issue number
+        run: echo "hello request"
+        run: echo "Issue number: ${{ github.event.issue.number }}"
