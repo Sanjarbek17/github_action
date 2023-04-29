@@ -1,8 +1,8 @@
 name: My Action
 
 on:
-  pull_request:
-    types: [opened, reopened, edited]
+  push:
+    branches: [ main ]
 
 
 jobs:
@@ -16,4 +16,4 @@ jobs:
 
     steps:
       - name: Print issue number
-        run: echo ${{ github.event.issue.number }}
+        run: echo ${{ github.event.issue }}
