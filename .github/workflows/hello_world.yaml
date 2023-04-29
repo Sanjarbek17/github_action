@@ -16,4 +16,4 @@ jobs:
 
     steps:
       - name: Print issue number
-        run: echo "Issue number is ${{ github.event.issue.number }}"
+        run: echo ${{ github.event.issue.number }}
