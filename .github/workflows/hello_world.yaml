@@ -3,7 +3,6 @@ name: first workflow
 on:
   push:
     branches: [ main ]
-    workflow_dispatch:
 
 
 jobs:
@@ -17,5 +16,4 @@ jobs:
 
     steps:
       - name: Print issue number
-        run: echo "hello request"
-        run: echo "Issue number: ${{ github.event.issue.number }}"
+        run: echo "Issue number is ${{ github.event.issue.number }}"
