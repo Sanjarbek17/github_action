@@ -18,6 +18,15 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.x
+    
+    - name: Linked Issues
+      uses: go-actions/linked-issues@v0.1.0
+      with:
+          pr_url: ${{github.event.pull_request.html_url}}
+          format: IssueNumber
+
+    - name: Output linked Issue list
+      run: echo "${{ steps.links.outputs.issues }}"
 
     - name: Retrieve pull request information
       id: pr_info
