@@ -1,25 +1,27 @@
-name: Has linked issues
+name: Sync Review Status
+
 on:
+  # Requires the event trigger to be of type pull_request or pull_request_target
   pull_request_target:
-    types:
-      - opened
-      - reopened
-      - edited
+    types: [review_requested]
 
 jobs:
-  check-linked-issues:
-    name: Check if pull request has linked issues
+  sync-review-status:
     runs-on: ubuntu-latest
+    name: Get Linked Issues
     steps:
-      - name: Get issues
-        id: get-issues
-        uses: mondeja/pr-linked-issues-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Print has linked issues
-        id: has-linked-issues
-        if: join(steps.get-issues.outputs.issues) != ''
-        run: echo "Has linked issues"
-      - name: Print has not linked issues
-        if: steps.has-linked-issues.conclusion == 'skipped'
-        run: echo "Has not linked issues"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get Linked Issues Action
+        uses: kin/gh-action-get-linked-issues@v1.0
+        id: linked-issues
+        with:
+          # Required: personal access token with permissions to archive cards. This needs to be set in Settings -> Secrets with a token that has permissions for all repos the issues are linked in for cross-repo functionality
+          access-token: "${{ secrets.secret_key }}"
+
+      - name: Move Issues to Ready for Review Column
+        uses: kin/gh-action-move-issue-to-column@1.0
+        with:
+          access-token: "${{ secrets.secret_key }}"
+          target-column: "Ready for Review"
+          issues: ${{ steps.linked-issues.outputs.issues }}
