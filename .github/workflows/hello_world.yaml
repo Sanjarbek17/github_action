@@ -1,10 +1,6 @@
 name: Django Tests
 
-on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
+on: [pull_request]
 
 jobs:
   test:
