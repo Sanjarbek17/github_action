@@ -12,8 +12,8 @@ jobs:
     steps:
       - id: link-issues
         uses: boneskull/more-linked-issues-action@v0.2.1
-        # with:
-        #   github-token: '${{ secrets.GITHUB_TOKEN }}'
+        with:
+          github-token: '${{ secrets.secret_key }}'
     # you likely won't need the output for anything, but here it is.
       - name: Get comma-delimited list of found links
         run: echo "${{ steps.link-issues.outputs.links }}"
