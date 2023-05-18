@@ -1,19 +1,20 @@
-# .github/workflows/more-issue-links.yml
-
+name: Get linked issues
 on:
-  pull_request:
-    # we use the `edited` type to detect changes to the PR title
-    types: [opened, edited, synchronize, reopened]
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - edited
 
 jobs:
-  link-issues:
+  get-linked-issues:
+    name: Get linked issues
     runs-on: ubuntu-latest
-    name: Link issues found in PR title and commit message(s)
     steps:
-      - id: link-issues
-        uses: boneskull/more-linked-issues-action@v0.2.1
-        with:
-          github-token: '${{ secrets.secret_key }}'
-    # you likely won't need the output for anything, but here it is.
-      - name: Get comma-delimited list of found links
-        run: echo "${{ steps.link-issues.outputs.links }}"
+      - name: Get issues
+        id: get-issues
+        uses: mondeja/pr-linked-issues-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print linked issue numbers
+        run: echo ${{ steps.get-issues.outputs.issues }}
