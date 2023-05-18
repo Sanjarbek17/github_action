@@ -19,17 +19,19 @@ jobs:
       with:
         python-version: 3.x
 
-    # - name: Install dependencies
-    #   run: pip install -r requirements.txt
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-    - name: Check issue number
-      id: check_issue
-      run: echo "::set-output name=issue::${{ github.event.pull_request.issue.number }}"
+    - name: Retrieve pull request information
+      id: pr_info
+      run: |
+        echo "::set-env name=PULL_REQUEST_URL::${{ github.event.pull_request.url }}"
+        echo "::set-env name=ISSUE_NUMBER::$(curl -s ${{ env.PULL_REQUEST_URL }} | jq -r '.issue_url' | awk -F'/' '{print $NF}')"
 
     - name: Run tests
       run: |
-        if [ "${{ steps.check_issue.outputs.issue }}" == "1" ]; then
+        if [[ "${{ env.ISSUE_NUMBER }}" == "1" ]]; then
           python manage.py test
         else
-          echo "Skipping tests for pull request associated with issue ${{ steps.check_issue.outputs.issue }}"
+          echo "Skipping tests for pull request associated with issue ${{ env.ISSUE_NUMBER }}"
         fi
