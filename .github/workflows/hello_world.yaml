@@ -2,7 +2,7 @@ name: Sync Review Status
 
 on:
   # Requires the event trigger to be of type pull_request or pull_request_target
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - reopened
@@ -15,8 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Get Linked Issues Action
-        uses: kin/gh-action-get-linked-issues@v1.0
+      - name: Get Linked Issues
+        uses: kin/gh-action-get-linked-issues@v2.0
+
         id: linked-issues
         with:
           # Required: personal access token with permissions to archive cards. This needs to be set in Settings -> Secrets with a token that has permissions for all repos the issues are linked in for cross-repo functionality
