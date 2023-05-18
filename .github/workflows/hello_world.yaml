@@ -11,34 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
+    # - name: Set up Python
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: 3.x
     
-    - name: Linked Issues
-      id: links
-      uses: go-actions/linked-issues@v0.1.0
-      with:
-          pr_url: ${{github.event.pull_request.html_url}}
-          format: IssueNumber
+      - name: Linked Issues
+        id: links
+        uses: go-actions/linked-issues@v0.1.0
+        with:
+            pr_url: ${{github.event.pull_request.html_url}}
+            format: IssueNumber
 
-    - name: Output linked Issue list
-      run: echo "${{ steps.links.outputs.issues }}"
+      - name: Output linked Issue list
+        run: echo "${{ steps.links.outputs.issues }}"
 
-    - name: Retrieve pull request information
-      id: pr_info
-      run: |
-        echo "{{ github.event.pull_request.url }}"
-        echo "$(curl -s ${{ env.PULL_REQUEST_URL }})"
+    # - name: Retrieve pull request information
+    #   id: pr_info
+    #   run: |
+    #     echo "{{ github.event.pull_request.url }}"
+    #     echo "$(curl -s ${{ env.PULL_REQUEST_URL }})"
 
-    - name: Run tests
-      run: |
-        if [[ "${{ env.ISSUE_NUMBER }}" == "1" ]]; then
-          python manage.py test
-        else
-          echo "Skipping tests for pull request associated with issue ${{ env.ISSUE_NUMBER }}"
-        fi
+    # - name: Run tests
+    #   run: |
+    #     if [[ "${{ env.ISSUE_NUMBER }}" == "1" ]]; then
+    #       python manage.py test
+    #     else
+    #       echo "Skipping tests for pull request associated with issue ${{ env.ISSUE_NUMBER }}"
+    #     fi
