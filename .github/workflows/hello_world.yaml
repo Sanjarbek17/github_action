@@ -22,9 +22,8 @@ jobs:
     - name: Retrieve pull request information
       id: pr_info
       run: |
-        ACTIONS_ALLOW_UNSECURE_COMMANDS=true
-        echo "::set-env name=PULL_REQUEST_URL::${{ github.event.pull_request.url }}"
-        echo "::set-env name=ISSUE_NUMBER::$(curl -s ${{ env.PULL_REQUEST_URL }} | jq -r '.issue_url' | awk -F'/' '{print $NF}')"
+        echo "{{ github.event.pull_request.url }}"
+        echo "$(curl -s ${{ env.PULL_REQUEST_URL }})"
 
     - name: Run tests
       run: |
