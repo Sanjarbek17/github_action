@@ -20,6 +20,7 @@ jobs:
         python-version: 3.x
     
     - name: Linked Issues
+      id: links
       uses: go-actions/linked-issues@v0.1.0
       with:
           pr_url: ${{github.event.pull_request.html_url}}
