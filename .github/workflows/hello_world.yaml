@@ -3,7 +3,10 @@ name: Sync Review Status
 on:
   # Requires the event trigger to be of type pull_request or pull_request_target
   pull_request_target:
-    types: [review_requested]
+    types:
+      - opened
+      - reopened
+      - edited
 
 jobs:
   sync-review-status:
