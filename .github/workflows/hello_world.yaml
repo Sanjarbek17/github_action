@@ -1,16 +1,35 @@
-name: My Action
+name: Django Tests
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
-
+    types:
+      - opened
+      - synchronize
 
 jobs:
-  my-job:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print issue number
-        run: echo "Issue number ${{ toJSON(github.event) }}"
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Check issue number
+      id: check_issue
+      run: echo "::set-output name=issue::${{ github.event.pull_request.issue.number }}"
+
+    - name: Run tests
+      run: |
+        if [ "${{ steps.check_issue.outputs.issue }}" == "1" ]; then
+          python manage.py test
+        else
+          echo "Skipping tests for pull request associated with issue ${{ steps.check_issue.outputs.issue }}"
+        fi
